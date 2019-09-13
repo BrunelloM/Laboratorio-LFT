@@ -1,0 +1,6 @@
+ciao______21 := ciao99 := 128 + ciao;
+
+when (x ==y) then
+    cases:= 189;
+
+
