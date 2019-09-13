@@ -10,13 +10,13 @@ public class Lexer {
         try {
             peek = (char) br.read();
         } catch (IOException exc) {
-            peek = (char) -1; // ERROR
+            peek = (char) - 1; // ERROR
         }
     }
 
     public Token lexical_scan(BufferedReader br) {
         // Incremento lettura della linea solo in caso sia stato letto il ch di newline
-        while (peek == ' ' || peek == '\t' || peek == '\n'  || peek == '\r') {
+        while (peek == ' ' || peek == '\t' || peek == '\n' || peek == '\r') {
             if (peek == '\n')
                 line++;
             readch(br);
@@ -70,11 +70,9 @@ public class Lexer {
                     peek = ' ';
                     return Word.and;
                 } else {
-                    System.err.println("Erroneous character after & : "  + peek + " at line " + (line + 1));
+                    System.err.println("Erroneous character after & : " + peek + " at line " + (line + 1));
                     return null;
                 }
-
-	// ... gestire i casi di ||, <, >, <=, >=, ==, <>, = ... //
 
             case '|':
                 readch(br);
@@ -82,7 +80,7 @@ public class Lexer {
                     peek = ' ';
                     return Word.or;
                 } else {
-                    System.err.println("Erroneous character after | : "  + peek + " at line " + (line + 1));
+                    System.err.println("Erroneous character after | : " + peek + " at line " + (line + 1));
                     return null;
                 }
 
@@ -95,7 +93,7 @@ public class Lexer {
                 } else
                     return Word.gt;
 
-            // Less than, less equals, not equals chars
+                // Less than, less equals, not equals chars
             case '<':
                 readch(br);
                 if (peek == '=') {
@@ -106,39 +104,39 @@ public class Lexer {
                 else
                     return Word.lt;
 
-            // Comp char
+                // Comp char
             case '=':
                 readch(br);
                 if (peek == '=') {
                     peek = ' ';
                     return Word.eq;
                 } else {
-                    System.err.println("Erroneous character after = : "  + peek + " at line " + (line + 1));
+                    System.err.println("Erroneous character after = : " + peek + " at line " + (line + 1));
                     return null;
                 }
 
-            // Assignment char
+                // Assignment char
             case ':':
                 readch(br);
                 if (peek == '=') {
                     peek = ' ';
                     return Word.assign;
                 } else {
-                    System.err.println("Erroneous assignment character after : "  + peek  + " at line " + (line + 1));
+                    System.err.println("Erroneous assignment character after : " + peek + " at line " + (line + 1));
                     return null;
                 }
 
-            case (char)-1:
+            case (char) - 1:
                 return new Token(Tag.EOF);
 
             default:
-		    if (Character.isLetter(peek) || Character.isDigit(peek)) {
+                if (Character.isLetter(peek) || Character.isDigit(peek)) {
                     String id = "";
 
                     do {
                         id += peek;
                         readch(br);
-                    } while(Character.isLetter(peek) || Character.isDigit(peek) || peek == '_');
+                    } while (Character.isLetter(peek) || Character.isDigit(peek) || peek == '_');
 
                     // Controllo a quale identificatore appartiene la stringa letta
                     // se id \notIn Identificatori allora id e' un identificatore variabile
@@ -169,30 +167,30 @@ public class Lexer {
                             return Word.print;
 
                         default:
-			    // This portion of program tests if the current word that have been read is a number or a valid variable name_
-			    // Those particular tests are made using DFA's
-			    if(idScanner(id))
-				return new Word(Tag.ID, id);
-			    else if(numScanner(id))
-				return new NumberTok(Tag.NUM, Integer.parseInt(id));
-			    else {
-				System.err.println("Invalid variable name "  + id);
+                            // This portion of program tests if the current word that have been read is a number or a valid variable name_
+                            // Those particular tests are made using DFA's
+                            if (idScanner(id))
+                                return new Word(Tag.ID, id);
+                            else if (numScanner(id))
+                                return new NumberTok(Tag.NUM, Integer.parseInt(id));
+                            else {
+                                System.err.println("Invalid variable name " + id);
                                 return null;
-			    }
+                            }
 
                     } // End  Switch
 
-	     } else {
-                   System.err.println("Erroneous character: " + peek  + " at line " + (line + 1));
-                   return null;
-            }
-	} // End While
+                } else {
+                    System.err.println("Erroneous character: " + peek + " at line " + (line + 1));
+                    return null;
+                }
+        } // End While
 
     } // End Method
 
     public static void main(String[] args) {
-	Lexer lex = new Lexer();
-        String path = "./prova.txt";
+        Lexer lex = new Lexer();
+        String path = "../prova.txt";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;
@@ -201,67 +199,71 @@ public class Lexer {
                 System.out.println("Scan: " + tok);
             } while (tok.tag != Tag.EOF);
             br.close();
-	    } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean idScanner(String s) {
         int state = 0, i = 0;
 
-	while(state >= 0 && i < s.length()) {
-	    char curChar = s.charAt(i++);
+        while (state >= 0 && i < s.length()) {
+            char curChar = s.charAt(i++);
 
-	    switch(state) {
-	        case 0:
-		    if(Character.isLetter(curChar))
-		        state = 3;
-		    else if(curChar == '_')
-		        state = 1;
-		    else
-	      	        state = -1;
-	        break;
+            switch (state) {
+                case 0:
+                    if (Character.isLetter(curChar))
+                        state = 3;
+                    else if (curChar == '_')
+                        state = 1;
+                    else
+                        state = -1;
+                    break;
 
-	        case 1:
-		    if(Character.isLetter(curChar))
-		        state = 3;
-		    else if(curChar == '_')
-		        state = 1;
-		    else
-		        state = -1;
-		break;
+                case 1:
+                    if (Character.isLetter(curChar))
+                        state = 3;
+                    else if (curChar == '_')
+                        state = 1;
+                    else
+                        state = -1;
+                    break;
 
-	        case 3:
-		    if(Character.isLetter(curChar) || Character.isDigit(curChar) || curChar == '_')
-		        state = 3;
-		    else
-	     	        state = -1;
-		    break;
-	    }
-	}
+                case 3:
+                    if (Character.isLetter(curChar) || Character.isDigit(curChar) || curChar == '_')
+                        state = 3;
+                    else
+                        state = -1;
+                    break;
+            }
+        }
 
-	return state == 3;
+        return state == 3;
     }
 
 
     public static boolean numScanner(String s) {
         int i = 0;
 
-	while(i < s.length()) {
-	    char curChar = s.charAt(i++);
+        while (i < s.length()) {
+            char curChar = s.charAt(i++);
 
-	    if(Character.isDigit(curChar)) {
-		while(i < s.length()) {
-		    curChar = s.charAt(i++);
+            if (Character.isDigit(curChar)) {
+                while (i < s.length()) {
+                    curChar = s.charAt(i++);
 
-		    if(!Character.isDigit(curChar))
-			    return false;
+                    if (!Character.isDigit(curChar))
+                        return false;
 
-		}
-		return true;
-	    } else
-		return false;
+                }
+                return true;
+            } else
+                return false;
 
-	}
-	return false;
+        }
+        return false;
     }
+
+}
 
 }

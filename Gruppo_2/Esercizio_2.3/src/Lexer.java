@@ -266,7 +266,7 @@ public class Lexer {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "./prova.txt";
+        String path = "../prova.txt";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             Token tok;

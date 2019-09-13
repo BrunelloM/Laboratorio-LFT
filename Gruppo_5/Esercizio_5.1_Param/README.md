@@ -6,4 +6,5 @@ Per funzionare spostarsi all'interno della directory Esercizio_5.1_Param, succes
 Assicurarsi di avere all'interno della cartella `out` il file `jasmin.jar`.  
 
 ## Esecuzione
-Per eseguire digitare  `java Compiler [NOMEFILE.pas]` (il file deve essere all'interno della cartella)
+Per eseguire digitare  `java Compiler [NOMEFILE.pas]` (il file deve essere all'interno della cartella)  
+Compiler generera' automaticamente due file: un file .j e un file .class
