@@ -1,0 +1,17 @@
+\documentclass[a4paper, 26pt]{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage[left=2cm, right=2cm, top=2cm]{geometry}
+
+
+\begin{document}
+Schema di traduzione per la grammatica di P: \\ \\
+$P \rightarrow \{SL.next = P.next\} SL \{emitLabel(P.next)\} EOF$ \\
+$SL \rightarrow \{ S.next = newlabel() \} S \{ emitLabel(S.next); SL.next = SL.next\} SL $
+
+
+\end{document}
