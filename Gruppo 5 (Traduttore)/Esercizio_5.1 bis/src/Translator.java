@@ -7,22 +7,19 @@ public class Translator {
     private Lexer lex;
     private BufferedReader pbr;
     private Token look;
-    private SymbolTable st = new SymbolTable();
-    private CodeGenerator code = new CodeGenerator();
-    private int count=0;
-    private boolean printTokens;
+    SymbolTable st = new SymbolTable();
+    CodeGenerator code = new CodeGenerator();
+    int count=0;
 
-    public Translator(Lexer l, BufferedReader br, boolean printTokens) {
+    public Translator(Lexer l, BufferedReader br) {
         lex = l;
         pbr = br;
-        this.printTokens = printTokens;
         move();
     }
 
     void move() {
         look = lex.lexical_scan(pbr);
-        if(printTokens)
-          System.out.println("token = " + look);
+        System.out.println("token = " + look);
     }
 
     void error(String s) {

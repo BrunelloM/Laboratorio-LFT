@@ -1,24 +1,27 @@
 import java.io.*;
 
 public class Translator {
+  
     private Lexer lex;
     private BufferedReader pbr;
     private Token look;
-
+    private boolean printToken;
     SymbolTable st = new SymbolTable();
     CodeGenerator code;
     int count=0;
 
-    public Translator(Lexer l, BufferedReader br, PrintWriter printWriter) {
+    public Translator(Lexer l, BufferedReader br, PrintWriter printWriter, boolean printToken) {
         lex = l;
         pbr = br;
+        this.printToken = printToken;
         code = new CodeGenerator(printWriter);
         move();
     }
 
     void move() {
         look = lex.lexical_scan(pbr);
-        System.out.println("token = " + look);
+        if(printToken)
+            System.out.println("token = " + look);
     }
 
     void error(String s) {

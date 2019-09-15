@@ -9,7 +9,7 @@ class Compiler {
         Lexer lex = new Lexer();
         BufferedReader br = new BufferedReader(new FileReader(args[0]));
         PrintWriter pwr = new PrintWriter(new FileWriter(outputFileName));
-        Translator et = new Translator(lex, br, pwr);
+        Translator et = new Translator(lex, br, pwr, false);                    // Disable buffering 
         et.prog();
         System.out.println("\nFile " + outputFileName + " generato!");
         br.close();
