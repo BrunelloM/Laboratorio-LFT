@@ -1,6 +1,6 @@
 public class MultipleOfThree {
 
-  public static void scan(String s) {
+  public static boolean scan(String s) {
 
     int i = 0, state = 0;
 

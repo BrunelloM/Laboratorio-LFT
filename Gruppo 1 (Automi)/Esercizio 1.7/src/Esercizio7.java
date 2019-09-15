@@ -5,7 +5,7 @@ public class Esercizio7 {
     int state = 0, i = 0;
 
     while(state >= 0 && i < s.length()) {
-        char ch = s.getChar(i++);
+        char ch = s.charAt(i++);
 
         switch(state) {
 
@@ -48,7 +48,7 @@ public class Esercizio7 {
   } // End scan function
 
   public static void main(String[] args) {
-    System.out.println(args[0] ? "Correct" :  "Wrong");
+    System.out.println(scan(args[0]) ? "Correct" :  "Wrong");
   }
 
 }
