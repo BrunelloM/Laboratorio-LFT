@@ -9,7 +9,7 @@ public class Translator {
     private Token look;
     private SymbolTable st = new SymbolTable();
     private CodeGenerator code = new CodeGenerator();
-    private int count=0;
+    private int count = 0;
     private boolean printTokens;
 
     public Translator(Lexer l, BufferedReader br, boolean printTokens) {
@@ -22,7 +22,7 @@ public class Translator {
     void move() {
         look = lex.lexical_scan(pbr);
         if(printTokens)
-          System.out.println("token = " + look);
+            System.out.println("token = " + look);
     }
 
     void error(String s) {
@@ -30,8 +30,8 @@ public class Translator {
     }
 
     void match(int t) {
-        if (look.tag == t) {
-            if (look.tag != Tag.EOF) move();
+        if(look.tag == t) {
+            if(look.tag != Tag.EOF) move();
         } else error("syntax error");
     }
 
@@ -98,15 +98,15 @@ public class Translator {
                     int id_addr_id = st.lookupAddress(((Word) look).lexeme);
                     if (id_addr_id == -1) {                                             // Add the current variable to symbol table
                         id_addr_id = count;
-                        st.insert(((Word)look).lexeme,count++);
+                        st.insert(((Word)look).lexeme, count++);
                     }
                     match(Tag.ID);
                     if(look.tag == Tag.ASSIGN) {
-                            match(Tag.ASSIGN);
-                            expr();
-                            code.emit(OpCode.istore, id_addr_id);
+                        match(Tag.ASSIGN);
+                        expr();
+                        code.emit(OpCode.istore, id_addr_id);
                     } else {
-                            error("expected assignment after ID");
+                        error("expected assignment after ID");
                     }
                 }
                 break;
@@ -145,8 +145,8 @@ public class Translator {
 
             case Tag.WHILE:
                 match(Tag.WHILE);
-                int bexpr_true = code.newLabel(), stat_here = code.newLabel();
                 match('(');
+                int bexpr_true = code.newLabel(), stat_here = code.newLabel();
                 code.emitLabel(stat_here); // Ogni volta che termino un'iterazione del ciclo devo verificare la condizione, cioe' qui
                 b_expr(bexpr_true, lnext);
                 match(')');
@@ -201,44 +201,44 @@ public class Translator {
     }
 
     private void b_expr(int ltrue, int lfalse) {
-        switch(look.tag){
-	        case '(' :
-	        case Tag.NUM :
-	        case Tag.ID :
-		        expr();
-		        if(look == Word.eq) { //==
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmpeq, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	         	} else if (look == Word.le) { // <=
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmple, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	          	} else if (look == Word.lt) { // <
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmplt, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	          	} else if (look == Word.ne) { // <>
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmpne, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	           	} else if (look == Word.ge) { // >=
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmpge, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	          	} else if (look == Word.gt) { // >
-	                match(Tag.RELOP);
-	                expr();
-	                code.emit(OpCode.if_icmpgt, ltrue);
-	                code.emit(OpCode.GOto, lfalse);
-	          	} else error("invalid boolean operator");
-          break;
-      }
+        switch(look.tag) {
+            case '(' :
+            case Tag.NUM :
+            case Tag.ID :
+      	        expr();
+    		        if(look == Word.eq) { //==
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmpeq, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+    	         	} else if (look == Word.le) { // <=
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmple, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+              	} else if (look == Word.lt) { // <
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmplt, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+              	} else if (look == Word.ne) { // <>
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmpne, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+               	} else if (look == Word.ge) { // >=
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmpge, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+              	} else if (look == Word.gt) { // >
+                    match(Tag.RELOP);
+                    expr();
+                    code.emit(OpCode.if_icmpgt, ltrue);
+                    code.emit(OpCode.GOto, lfalse);
+              	} else error("invalid boolean operator");
+            break;
+        }
     }
 
     private void expr() {
@@ -344,7 +344,7 @@ public class Translator {
             match(Tag.NUM);
         } else if(look.tag == Tag.ID) {
             int read_id_addr = st.lookupAddress(((Word)look).lexeme);
-            if (read_id_addr == -1)
+            if(read_id_addr == -1)
                 error("undeclared variable " + ((Word)look).lexeme);
             code.emit(OpCode.iload, read_id_addr);
             match(Tag.ID);
@@ -361,7 +361,9 @@ public class Translator {
             System.out.println("\nFile Output.j generato!");
             System.out.println("Digita 'java -jar jasmin.jar Output.j' per il file Output.class e 'java Output' per eseguirlo.\n");
             br.close();
-        } catch (IOException e) {e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     } // end main
 
 }
