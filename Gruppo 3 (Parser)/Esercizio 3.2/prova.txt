@@ -1,3 +1,0 @@
-case when(x > y || y < u) {
-  print(x)
-}
