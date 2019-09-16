@@ -145,12 +145,11 @@ public class Translator {
 
             case Tag.WHILE:
                 match(Tag.WHILE);
-                int bexpr_true = code.newLabel(), stat_here = code.newLabel();
+                int stat_here = code.newLabel();
                 match('(');
                 code.emitLabel(stat_here); // Ogni volta che termino un'iterazione del ciclo devo verificare la condizione, cioe' qui
-                b_expr(bexpr_true, lnext);
+                b_expr(lnext);
                 match(')');
-                code.emitLabel(bexpr_true);
                 stat(stat_here);
                 code.emit(OpCode.GOto, stat_here);
                 break;
@@ -191,7 +190,7 @@ public class Translator {
             match(Tag.WHEN);
             match('(');
             int bexpr_true = code.newLabel();
-            b_expr(bexpr_true, lnext_when);
+            b_expr(lnext_when);
             match(')');
             code.emitLabel(bexpr_true);
             stat(lnext);
@@ -200,7 +199,7 @@ public class Translator {
             error("whenitem error");
     }
 
-    private void b_expr(int ltrue, int lfalse) {
+    private void b_expr(int lfalse) {
         switch(look.tag) {
             case '(' :
             case Tag.NUM :
@@ -209,33 +208,27 @@ public class Translator {
     		        if(look == Word.eq) { //==
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmpeq, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmpne, lfalse);
     	         	} else if (look == Word.le) { // <=
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmple, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmpgt, lfalse);
               	} else if (look == Word.lt) { // <
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmplt, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmpge, lfalse);
               	} else if (look == Word.ne) { // <>
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmpne, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmpeq, lfalse);
                	} else if (look == Word.ge) { // >=
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmpge, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmplt, lfalse);
               	} else if (look == Word.gt) { // >
                     match(Tag.RELOP);
                     expr();
-                    code.emit(OpCode.if_icmpgt, ltrue);
-                    code.emit(OpCode.GOto, lfalse);
+                    code.emit(OpCode.if_icmple, lfalse);
               	} else error("invalid boolean operator");
             break;
         }

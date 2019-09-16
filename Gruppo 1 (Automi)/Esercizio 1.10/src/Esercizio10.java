@@ -16,9 +16,9 @@ public class Esercizio10 {
 
                 case 1:
             		    if(ch == '*')
-            			    state = 2;
+                      state = 2;
             		    else
-            			    state = -1;
+                      state = -1;
           	    break;
 
                 case 2:
@@ -48,6 +48,7 @@ public class Esercizio10 {
                       state = -1;
                 break;
             } // End switch
+            System.out.println(state);
         } // End While
         return state == 5;
     } // End scan function
