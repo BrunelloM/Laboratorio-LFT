@@ -18,3 +18,6 @@ echo "Compiling Esercizio 1.9...";
 javac -d ./Esercizio\ 1.9/out/ ./Esercizio\ 1.9/src/*.java || exit;
 echo "Compiling Esercizio 1.10...";
 javac -d ./Esercizio\ 1.10/out/ ./Esercizio\ 1.10/src/*.java || exit;
+echo "Compiling Esercizio 1.11...";
+javac -d ./Esercizio\ 1.11/out/ ./Esercizio\ 1.11/src/*.java || exit;
+echo "All files has been compiled successfully.";
